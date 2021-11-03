@@ -3,24 +3,35 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Tile.generated.h"
 
-UCLASS()
+UCLASS(BlueprintType)
 class ADVGAMESPROGRAMMING_API ATile : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATile();
+	USceneComponent* LocationComponent;
+	float Rot;
+	float RoofHeight;
+	UPROPERTY(BlueprintReadWrite)
+		bool House;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> ToSpawn;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void CreateBuilding();
+	UFUNCTION(BlueprintCallable)
+		void GenerateTrees();
+	bool ReturnHouse();
 };

@@ -2,25 +2,47 @@
 
 #pragma once
 
+#include "Tile.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Grid.generated.h"
+
 
 UCLASS()
 class ADVGAMESPROGRAMMING_API AGrid : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AGrid();
+
+	UPROPERTY(EditAnywhere)
+		int32 SideLength;
+	UPROPERTY(EditAnywhere)
+		int32 RoadLength;
+	UPROPERTY(BlueprintReadOnly)
+		TArray<ATile*> TileGrid;
+	int32 Scale;
+	bool StartFound;
+	int CurrentTile;
+	TArray<int32> RoadOptions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> RoadToSpawn;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AActor> ObjectSetter;
+
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	FVector FindTilePos(int index);
+	void RoadGen();
+	void FindNextRoad();
 };
+

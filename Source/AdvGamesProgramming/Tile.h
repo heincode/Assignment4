@@ -18,10 +18,18 @@ public:
 	USceneComponent* LocationComponent;
 	float Rot;
 	float RoofHeight;
+	int TileNo;
+	bool IsRoad;
 	UPROPERTY(BlueprintReadWrite)
 		bool House;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawn;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> ToSpawnHouse;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> ToSpawnHouse2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> ToSpawnHouse3;
 
 protected:
 	// Called when the game starts or when spawned

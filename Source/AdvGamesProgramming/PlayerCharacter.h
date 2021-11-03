@@ -19,6 +19,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	float SprintMovementSpeed;
+	float NormalMovementSpeed;
 
 public:	
 
@@ -38,7 +40,11 @@ public:
 	void LookUp(float Value);
 	void Turn(float Value);
 	void SprintStart();
+	UFUNCTION(Server, Reliable)
+	void ServerSprintStart();
 	void SprintEnd();
+	UFUNCTION(Server, Reliable)
+	void ServerSprintEnd();
 	void Reload();
 
 	UFUNCTION(BlueprintImplementableEvent)

@@ -3,6 +3,8 @@
 
 #include "Tile.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Net/UnrealNetwork.h"
+#include "Grid.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -13,21 +15,16 @@ ATile::ATile()
 	//on construction a percentage of tiles are set to be houses
 	LocationComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Location Component"));
 	RootComponent = LocationComponent;
-	if (FMath::FRandRange(1, 12) < 3)
-	{
-		House = true;
-		CreateBuilding();
-	}
-	else
-	{
-		House = false;
-	}
 }
 
 // Called when the game starts or when spawned
 void ATile::BeginPlay()
 {
-
+	if (TileNo != 0 && House == true && IsRoad == false)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tile made house, %d "), TileNo);
+		CreateBuilding();
+	}
 }
 
 // Called every frame
@@ -40,14 +37,6 @@ void ATile::Tick(float DeltaTime)
 //This creates the building with a random level of floors and random rotation
 void ATile::CreateBuilding()
 {
-	//initial floor is created
-	UStaticMeshComponent* ProtoHouse = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("protohouse"));
-	ProtoHouse->SetupAttachment(RootComponent);
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> ProtoHouseAsset(TEXT("/Game/Mesh/fixedbase.fixedbase"));
-
-	if (ProtoHouseAsset.Succeeded())
-	{
-
 
 		//Rot value is randomised to be one of these rotations
 		Rot = 0;    //results in base and roof
@@ -69,61 +58,63 @@ void ATile::CreateBuilding()
 			RoofHeight = 1182.0f;
 		}
 
-		//the initial floor is placed in the scene
-		ProtoHouse->SetStaticMesh(ProtoHouseAsset.Object);
-		ProtoHouse->SetRelativeRotation(FRotator(Rot, 0.0f, 0.0f));
-		ProtoHouse->SetWorldScale3D(FVector(1.f));
-		ProtoHouse->SetRelativeLocation(FVector(0.0f, -30.0f, 0.0f));
-	}
-
-	if (Rot == 180.f || Rot == 270.0f)
-	{
-		//the next floor is created if needed
-		UStaticMeshComponent* ProtoHouseLevel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("protohouselevel"));
-		ProtoHouseLevel->SetupAttachment(RootComponent);
-
-		static ConstructorHelpers::FObjectFinder<UStaticMesh> ProtoHouseLevelAsset(TEXT("/Game/Mesh/fixedfloor.fixedfloor"));
-
-		if (ProtoHouseLevelAsset.Succeeded())
+		//first level created
+		if (ToSpawnHouse)
 		{
-			ProtoHouseLevel->SetStaticMesh(ProtoHouseLevelAsset.Object);
-			ProtoHouseLevel->SetRelativeRotation(FRotator(Rot, 0.0f, 0.0f));
-			ProtoHouseLevel->SetWorldScale3D(FVector(1.f));
-			ProtoHouseLevel->SetRelativeLocation(FVector(0.0f, -430.0f, 0.0f));
-		}
-		if (Rot == 270.0f)
-		{
-			//the next floor is created if needed
-			UStaticMeshComponent* ProtoHouseLevel2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("protohouselevel2"));
-			ProtoHouseLevel2->SetupAttachment(RootComponent);
-
-			static ConstructorHelpers::FObjectFinder<UStaticMesh> ProtoHouseLevel2Asset(TEXT("/Game/Mesh/fixedfloor.fixedfloor"));
-
-			if (ProtoHouseLevelAsset.Succeeded())
+			UWorld* World = GetWorld();
+			if (World)
 			{
-				ProtoHouseLevel2->SetStaticMesh(ProtoHouseLevel2Asset.Object);
-				ProtoHouseLevel2->SetRelativeRotation(FRotator(Rot, 0.0f, 0.0f));
-				ProtoHouseLevel2->SetWorldScale3D(FVector(1.f));
-				ProtoHouseLevel2->SetRelativeLocation(FVector(0.0f, -830.0f, 0.0f));
+				FActorSpawnParameters spawnPar;
+				spawnPar.Owner = this;
+				FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 30.0f);
+				World->SpawnActor<AStaticMeshActor>(ToSpawnHouse, Location, FRotator(0.0f, Rot, 90.0f), spawnPar);
 			}
 		}
-	}
 
-	//the roof is created and placed
-	UStaticMeshComponent* Roof = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("roof"));
-	Roof->SetupAttachment(RootComponent);
+		//second level created
+		if (Rot == 180.f || Rot == 270.0f)
+		{
+			if (ToSpawnHouse2)
+			{
+				UWorld* World = GetWorld();
+				if (World)
+				{
+					FActorSpawnParameters spawnPar;
+					spawnPar.Owner = this;
+					FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 430.0f);
+					World->SpawnActor<AStaticMeshActor>(ToSpawnHouse2, Location, FRotator(0.0f, Rot, 90.0f), spawnPar);
+				}
+			}
+		}
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> RoofAsset(TEXT("/Game/Mesh/fixedroof.fixedroof"));
+		//third level created
+		if (Rot == 270.0f)
+		{
+			if (ToSpawnHouse2)
+			{
+				UWorld* World = GetWorld();
+				if (World)
+				{
+					FActorSpawnParameters spawnPar;
+					spawnPar.Owner = this;
+					FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 830.0f);
+					World->SpawnActor<AStaticMeshActor>(ToSpawnHouse2, Location, FRotator(0.0f, Rot, 90.0f), spawnPar);
+				}
+			}
+		}
 
-	if (RoofAsset.Succeeded())
-	{
-		Roof->SetStaticMesh(RoofAsset.Object);
-		Roof->SetRelativeRotation(FRotator(Rot, 0.0f, 0.0f));
-		Roof->SetWorldScale3D(FVector(1.f));
-		Roof->SetRelativeLocation(FVector(0.0f, -RoofHeight, 0.0f));
-	}
-
-
+		////the roof is created
+		if (ToSpawnHouse3)
+		{
+			UWorld* World = GetWorld();
+			if (World)
+			{
+				FActorSpawnParameters spawnPar;
+				spawnPar.Owner = this;
+				FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, RoofHeight);
+				World->SpawnActor<AStaticMeshActor>(ToSpawnHouse3, Location, FRotator(0.0f, Rot, 90.0f), spawnPar);
+			}
+		}
 }
 
 //trees are created and placed randomly within their tile at a random rotation

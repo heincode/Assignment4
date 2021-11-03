@@ -31,6 +31,13 @@ public:
 		TSubclassOf<AStaticMeshActor> RoadToSpawn;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AActor> ObjectSetter;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> House1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> House2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> House3;
+	USceneComponent* LocationComponent;
 
 
 

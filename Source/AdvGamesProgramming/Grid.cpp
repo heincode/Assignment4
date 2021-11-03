@@ -4,8 +4,10 @@
 #include "Grid.h"
 
 #include <algorithm>
-
+#include "UObject/ConstructorHelpers.h"
+#include "Net/UnrealNetwork.h"
 #include "Engine/World.h"
+#include "Components/StaticMeshComponent.h"
 #include "Framework/Views/ITypedTableView.h"
 
 // Sets default values
@@ -16,6 +18,8 @@ AGrid::AGrid()
 	SideLength = 25;
 	Scale = 1100;
 	RoadLength = 300;
+	LocationComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Location Component"));
+	RootComponent = LocationComponent;
 }
 
 // Called when the game starts or when spawned
@@ -23,43 +27,63 @@ void AGrid::BeginPlay()
 {
 	Super::BeginPlay();
 	//Creates all of the Tiles and assigns them to the grid array
-	for (int32 i = 0; i < (SideLength * SideLength); i++)
+	
+	if (GetGameInstance()->IsDedicatedServerInstance())
 	{
-		UWorld* World = GetWorld();
-		if (World)
+		for (int32 i = 0; i < (SideLength * SideLength); i++)
 		{
-			FActorSpawnParameters spawnPar;
-			spawnPar.Owner = this;
-			ATile* SpawnedTile = World->SpawnActor<ATile>(FindTilePos(i), FRotator(0.0f, 0.0f, 90.0f), spawnPar);
-			TileGrid.Add(SpawnedTile);
-		}
-	}
-	//Finds empty tile in the middle and sets as the road start then stats the road generation
-	for (int i = 0; i < TileGrid.Num(); i++) {
-		if (i < TileGrid.Num() / 2) {}
-		else
-		{
-			if (StartFound) {}
-			else
+			UWorld* World = GetWorld();
+			if (World)
 			{
-				CurrentTile = i;
-				if (TileGrid[i]->ReturnHouse()) {}
+				FActorSpawnParameters spawnPar;
+				spawnPar.Owner = this;
+				ATile* SpawnedTile = World->SpawnActor<ATile>(FindTilePos(i), FRotator(0.0f, 0.0f, 90.0f), spawnPar);
+				SpawnedTile->ToSpawnHouse = House1;
+				SpawnedTile->ToSpawnHouse2 = House2;
+				SpawnedTile->ToSpawnHouse3 = House3;
+				if (FMath::FRandRange(1, 12) < 3)
+				{
+					SpawnedTile->House = true;
+				}
 				else
 				{
-					StartFound = true;
-					RoadGen();
-					//tells the tiles to generate trees
-					FActorSpawnParameters spawnPar;
-					spawnPar.Owner = this;
-					GetWorld()->SpawnActor<AActor>(ObjectSetter, FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 90.0f), spawnPar);
-					for (ATile* tile : TileGrid)
+					SpawnedTile->House = false;
+				}
+				SpawnedTile->TileNo = i;
+				TileGrid.Add(SpawnedTile);
+				
+			}
+		}
+		
+		//Finds empty tile in the middle and sets as the road start then starts the road generation
+		
+			for (int i = 0; i < TileGrid.Num(); i++) {
+				if (i < TileGrid.Num() / 2) {}
+				else
+				{
+					if (StartFound) {}
+					else
 					{
-						tile->GenerateTrees();
+						CurrentTile = i;
+						if (TileGrid[i]->House) {}
+						else
+						{
+							StartFound = true;
+							RoadGen();
+							//tells the tiles to generate trees
+							FActorSpawnParameters spawnPar;
+							spawnPar.Owner = this;
+							GetWorld()->SpawnActor<AActor>(ObjectSetter, FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 90.0f), spawnPar);
+							for (ATile* tile : TileGrid)
+							{
+								tile->GenerateTrees();
+							}
+						}
 					}
 				}
 			}
 		}
-	}
+	
 }
 
 // Called every frame
@@ -82,7 +106,7 @@ void AGrid::RoadGen()
 {
 	for (int32 i = 0; i < RoadLength; i++)
 	{
-		if (TileGrid[CurrentTile]->ReturnHouse())
+		if (TileGrid[CurrentTile]->House)
 		{
 			FindNextRoad();
 		}
@@ -97,6 +121,8 @@ void AGrid::RoadGen()
 					FActorSpawnParameters spawnPar;
 					spawnPar.Owner = this;
 					World->SpawnActor<AStaticMeshActor>(RoadToSpawn, FindTilePos(CurrentTile), FRotator(0.0f, 0.0f, 0.0f), spawnPar);
+					TileGrid[CurrentTile]->IsRoad = true;
+					UE_LOG(LogTemp, Warning, TEXT("Road made"));
 					FindNextRoad();
 				}
 			}
@@ -129,7 +155,7 @@ void AGrid::FindNextRoad()
 	{
 		for (int i = 0; i < RoadOptions.Num(); i++)
 		{
-			if (TileGrid[RoadOptions[i]]->ReturnHouse())
+			if (TileGrid[RoadOptions[i]]->House)
 			{
 				RoadOptions.RemoveAt(i, 1, true);
 			}

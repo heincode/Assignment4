@@ -46,6 +46,9 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerSprintEnd();
 	void Reload();
+	UFUNCTION(Client, Reliable)
+	void SetPlayerHUDVisibility(bool bHUDVisible);
+	//void OnDeath();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BlueprintReload();

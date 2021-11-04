@@ -29,6 +29,8 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	float SprintMultiplier;
 
+	class UHealthComponent* HealthComponent;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -40,15 +42,16 @@ public:
 	void LookUp(float Value);
 	void Turn(float Value);
 	void SprintStart();
+	void SprintEnd();
+	void Reload();
+
 	UFUNCTION(Server, Reliable)
 	void ServerSprintStart();
-	void SprintEnd();
 	UFUNCTION(Server, Reliable)
 	void ServerSprintEnd();
-	void Reload();
 	UFUNCTION(Client, Reliable)
 	void SetPlayerHUDVisibility(bool bHUDVisible);
-	//void OnDeath();
+	void OnDeath();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BlueprintReload();

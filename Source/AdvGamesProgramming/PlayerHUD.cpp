@@ -46,6 +46,18 @@ void APlayerHUD::SetPlayerHealthBarPercent(float Percent)
 	if (HealthProgressBar)
 	{
 		HealthProgressBar->SetPercent(Percent);
+		if (Percent >= 0.66f)
+		{
+			HealthProgressBar->SetFillColorAndOpacity(FLinearColor(0.0f, 1.0f, 0.0f, 1.0f));
+		}
+		else if (Percent >= 0.33f)
+		{
+			HealthProgressBar->SetFillColorAndOpacity(FLinearColor(1.0f, 1.0f, 0.0f, 1.0f));
+		}
+		else
+		{
+			HealthProgressBar->SetFillColorAndOpacity(FLinearColor(1.0f, 0.0f, 0.0f, 1.0f));
+		}
 	}
 	else
 	{

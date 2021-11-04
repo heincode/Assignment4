@@ -32,6 +32,11 @@ void APlayerCharacter::BeginPlay()
 
 	//Initialise the camera variable
 	Camera = FindComponentByClass<UCameraComponent>();
+	//Initialise the health component
+	HealthComponent = FindComponentByClass<UHealthComponent>();
+	//UE_LOG(LogTemp, Warning, TEXT("IM HERE"))
+	if (HealthComponent)
+		HealthComponent->SetIsReplicated(true);
 
 	// Get the skeletal mesh and then get the anim instance from it cast to the first person anim instance.
 	USkeletalMeshComponent* SkeletalMesh = Cast<USkeletalMeshComponent>(GetDefaultSubobjectByName(TEXT("Arms")));
@@ -135,11 +140,11 @@ void APlayerCharacter::Reload()
 	BlueprintReload();
 }
 
-/*void APlayerCharacter::OnDeath()
+void APlayerCharacter::OnDeath()
 {
 	if (GetLocalRole() == ROLE_Authority)
 	{
-		AMultiplayerGameMode* MultiplayerGameMode = Cast<AMultiplayerGameMode>(GetWorld()->GetAuthGameMode());
+		/*AMultiplayerGameMode* MultiplayerGameMode = Cast<AMultiplayerGameMode>(GetWorld()->GetAuthGameMode());
 		if (MultiplayerGameMode)
 		{
 			MultiplayerGameMode->Respawn(GetController());
@@ -147,9 +152,9 @@ void APlayerCharacter::Reload()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Unable to find the GameMode"))
-		}
+		}*/
 	}
-}*/
+}
 
 
 void APlayerCharacter::SetPlayerHUDVisibility_Implementation(bool bHUDVisible)

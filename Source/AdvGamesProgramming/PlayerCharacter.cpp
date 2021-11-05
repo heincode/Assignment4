@@ -166,7 +166,7 @@ void APlayerCharacter::OnDeath()
 				PlayerHUD->SetDeaths(Deaths);
 			}
 		}
-		/*AMultiplayerGameMode* MultiplayerGameMode = Cast<AMultiplayerGameMode>(GetWorld()->GetAuthGameMode());
+		AMultiplayerGameMode* MultiplayerGameMode = Cast<AMultiplayerGameMode>(GetWorld()->GetAuthGameMode());
 		if (MultiplayerGameMode)
 		{
 			MultiplayerGameMode->Respawn(GetController());
@@ -174,7 +174,7 @@ void APlayerCharacter::OnDeath()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Unable to find the GameMode"))
-		}*/
+		}
 	}
 }
 

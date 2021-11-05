@@ -54,3 +54,41 @@ void AMultiplayerGameMode::Respawn(AController* Controller)
 		GetWorldTimerManager().SetTimer(RespawnTimer, RespawnDelegate, 5.0f, false);
 	}
 }
+
+void AMultiplayerGameMode::TriggerRespawn(AController* Controller)
+{
+	if (Controller)
+	{
+		AActor* SpawnPoint = ChoosePlayerStart(Controller);
+		if (SpawnPoint)
+		{
+			APawn* SpawnedPlayer = GetWorld()->SpawnActor<APawn>(DefaultPawnClass, SpawnPoint->GetActorLocation(), SpawnPoint->GetActorRotation());
+			if (SpawnedPlayer)
+			{
+				Controller->Possess(SpawnedPlayer);
+			}
+		}
+	}
+
+	//Show the hud
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (PlayerController)
+	{
+		APlayerCharacter* Character = Cast<APlayerCharacter>(PlayerController->GetPawn());
+		if (Character && !Character->IsLocallyControlled())
+		{
+			Character->SetPlayerHUDVisibility(true);
+		}
+		else if (Character && Character->IsLocallyControlled())
+		{
+			APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD());
+			if (PlayerHUD)
+			{
+				PlayerHUD->ShowHUD();
+				PlayerHUD->SetPlayerHealthBarPercent(1.0f);
+			}
+
+			Character->ResetModelVisibility();
+		}
+	}
+}

@@ -61,6 +61,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	int32 Pity;
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ResetModelVisibility();
+
 private:
 
 	UCameraComponent* Camera;

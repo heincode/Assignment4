@@ -44,6 +44,19 @@ void APlayerCharacter::BeginPlay()
 	{
 		AnimInstance = Cast<UFirstPersonAnimInstance>(SkeletalMesh->GetAnimInstance());
 	}
+
+	Kills = 0;
+	Deaths = 0;
+	
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD());
+		if (PlayerHUD)
+		{
+			PlayerHUD->SetKills(Kills);
+			PlayerHUD->SetDeaths(Deaths);
+		}
+	}
 }
 
 // Called every frame
@@ -142,8 +155,17 @@ void APlayerCharacter::Reload()
 
 void APlayerCharacter::OnDeath()
 {
+	Deaths++;
 	if (GetLocalRole() == ROLE_Authority)
 	{
+		if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+		{
+			APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD());
+			if (PlayerHUD)
+			{
+				PlayerHUD->SetDeaths(Deaths);
+			}
+		}
 		/*AMultiplayerGameMode* MultiplayerGameMode = Cast<AMultiplayerGameMode>(GetWorld()->GetAuthGameMode());
 		if (MultiplayerGameMode)
 		{

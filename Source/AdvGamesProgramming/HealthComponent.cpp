@@ -72,7 +72,6 @@ void UHealthComponent::OnTakeDamage(float Damage)
 			UpdateHealthBar();
 		}
 	}
-
 }
 
 void UHealthComponent::OnDeath()

@@ -37,6 +37,8 @@ APlayerHUD::APlayerHUD()
 		HealthProgressBar = Cast<UProgressBar>(CurrentPlayerHUDWidget->GetWidgetFromName(TEXT("ProgHealthBar")));
 		RoundsRemainingText = Cast<UTextBlock>(CurrentPlayerHUDWidget->GetWidgetFromName(TEXT("RoundsRemaining")));
 		RoundsInMagazineText = Cast<UTextBlock>(CurrentPlayerHUDWidget->GetWidgetFromName(TEXT("RoundsInMagazine")));
+		KillsText = Cast<UTextBlock>(CurrentPlayerHUDWidget->GetWidgetFromName(TEXT("Kills")));
+		DeathsText = Cast<UTextBlock>(CurrentPlayerHUDWidget->GetWidgetFromName(TEXT("Deaths")));
 	}
 
 }
@@ -87,5 +89,21 @@ void APlayerHUD::SetAmmoText(int32 RoundsRemaining, int32 RoundsInMagazine)
 	{
 		RoundsRemainingText->SetText(FText::FromString(FString::Printf(TEXT("%i"), RoundsRemaining)));
 		RoundsInMagazineText->SetText(FText::FromString(FString::Printf(TEXT("%i"), RoundsInMagazine)));
+	}
+}
+
+void APlayerHUD::SetKills(int32 Kills)
+{
+	if (KillsText)
+	{
+		KillsText->SetText(FText::FromString(FString::Printf(TEXT("%i"), Kills)));
+	}
+}
+
+void APlayerHUD::SetDeaths(int32 Deaths)
+{
+	if (DeathsText)
+	{
+		DeathsText->SetText(FText::FromString(FString::Printf(TEXT("%i"), Deaths)));
 	}
 }

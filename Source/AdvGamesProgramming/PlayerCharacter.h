@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	float SprintMultiplier;
 
+	int32 Kills;
+	int32 Deaths;
+
 	class UHealthComponent* HealthComponent;
 
 	// Called every frame

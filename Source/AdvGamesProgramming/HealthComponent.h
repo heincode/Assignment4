@@ -14,7 +14,7 @@ class ADVGAMESPROGRAMMING_API UHealthComponent : public UActorComponent
 
 private:
 	UFUNCTION()
-		void UpdateHealthBar();
+	void UpdateHealthBar();
 
 public:
 	// Sets default values for this component's properties

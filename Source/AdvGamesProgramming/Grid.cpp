@@ -41,6 +41,7 @@ void AGrid::BeginPlay()
 				SpawnedTile->ToSpawnHouse = House1;
 				SpawnedTile->ToSpawnHouse2 = House2;
 				SpawnedTile->ToSpawnHouse3 = House3;
+				SpawnedTile->ToSpawnBush = Bush;
 				if (FMath::FRandRange(1, 12) < 3)
 				{
 					SpawnedTile->House = true;
@@ -77,6 +78,11 @@ void AGrid::BeginPlay()
 							for (ATile* tile : TileGrid)
 							{
 								tile->GenerateTrees();
+							}
+							//generates bushes
+							for (ATile* tile : TileGrid)
+							{
+								tile->GenerateBushes();
 							}
 						}
 					}

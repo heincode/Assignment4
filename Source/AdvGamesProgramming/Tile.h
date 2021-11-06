@@ -25,6 +25,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawn;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> ToSpawnBush;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawnHouse;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawnHouse2;
@@ -39,7 +41,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void CreateBuilding();
-	UFUNCTION(BlueprintCallable)
-		void GenerateTrees();
+	void GenerateTrees();
+	void GenerateBushes();
 	bool ReturnHouse();
 };

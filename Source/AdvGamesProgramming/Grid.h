@@ -37,6 +37,8 @@ public:
 		TSubclassOf<AStaticMeshActor> House2;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> House3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> Bush;
 	USceneComponent* LocationComponent;
 
 

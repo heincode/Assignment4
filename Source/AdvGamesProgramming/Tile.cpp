@@ -136,6 +136,25 @@ void ATile::GenerateTrees()
 	}
 }
 
+//bushes are created and placed randomly within their tile at a random rotation
+void ATile::GenerateBushes()
+{
+	if (!House && FMath::FRandRange(1, 2) < 2)
+	{
+		if (ToSpawnBush)
+		{
+			UWorld* World = GetWorld();
+			if (World)
+			{
+				FActorSpawnParameters spawnPar;
+				spawnPar.Owner = this;
+				FVector Location = this->GetActorLocation() + FVector(FMath::FRandRange(-450, 450), FMath::FRandRange(-450, 450), 0.0f);
+				World->SpawnActor<AStaticMeshActor>(ToSpawnBush, Location, FRotator(0.0f, FMath::FRandRange(1, 180), 90.0f), spawnPar);
+			}
+		}
+	}
+}
+
 bool ATile::ReturnHouse()
 {
 	return House;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "ScoreTracker.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -28,9 +29,6 @@ public:
 	float LookSensitivity;
 	UPROPERTY(EditInstanceOnly)
 	float SprintMultiplier;
-
-	int32 Kills;
-	int32 Deaths;
 
 	class UHealthComponent* HealthComponent;
 
@@ -56,6 +54,7 @@ public:
 	void SetPlayerHUDVisibility(bool bHUDVisible);
 	void OnDeath();
 
+	AScoreTracker *ScoreTracker;
 	UFUNCTION(BlueprintImplementableEvent)
 	void BlueprintReload();
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
@@ -63,6 +62,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ResetModelVisibility();
+
+	UFUNCTION(Server, Reliable)
+		void ServerAddDeath();
 
 private:
 

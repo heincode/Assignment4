@@ -7,6 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "HealthComponent.h"
+#include "ScoreTracker.h"
+#include "Kismet/GameplayStatics.h"
 #include "MultiplayerGameMode.h"
 #include "Engine/World.h"
 #include "PlayerHUD.h"
@@ -28,8 +30,8 @@ APlayerCharacter::APlayerCharacter()
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
-	Super::BeginPlay();
-
+	Super::BeginPlay(); 
+	ScoreTracker = Cast<AScoreTracker>(UGameplayStatics::GetActorOfClass(GetWorld(), AScoreTracker::StaticClass()));
 	//Initialise the camera variable
 	Camera = FindComponentByClass<UCameraComponent>();
 	//Initialise the health component
@@ -44,17 +46,14 @@ void APlayerCharacter::BeginPlay()
 	{
 		AnimInstance = Cast<UFirstPersonAnimInstance>(SkeletalMesh->GetAnimInstance());
 	}
-
-	Kills = 0;
-	Deaths = 0;
 	
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD());
 		if (PlayerHUD)
 		{
-			PlayerHUD->SetKills(Kills);
-			PlayerHUD->SetDeaths(Deaths);
+			//PlayerHUD->SetKills(Kills);
+			PlayerHUD->SetDeaths(ScoreTracker->GetDeaths());
 		}
 	}
 }
@@ -155,7 +154,8 @@ void APlayerCharacter::Reload()
 
 void APlayerCharacter::OnDeath()
 {
-	Deaths++;
+	ScoreTracker->AddDeath();
+	ServerAddDeath();
 	if (GetLocalRole() == ROLE_Authority)
 	{
 		if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
@@ -163,7 +163,7 @@ void APlayerCharacter::OnDeath()
 			APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD());
 			if (PlayerHUD)
 			{
-				PlayerHUD->SetDeaths(Deaths);
+				PlayerHUD->SetDeaths(ScoreTracker->GetDeaths());
 			}
 		}
 		AMultiplayerGameMode* MultiplayerGameMode = Cast<AMultiplayerGameMode>(GetWorld()->GetAuthGameMode());
@@ -176,6 +176,11 @@ void APlayerCharacter::OnDeath()
 			UE_LOG(LogTemp, Warning, TEXT("Unable to find the GameMode"))
 		}
 	}
+}
+
+void APlayerCharacter::ServerAddDeath_Implementation()
+{
+	ScoreTracker->AddDeath();
 }
 
 

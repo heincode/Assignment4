@@ -5,7 +5,9 @@
 #include "Tile.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "WeaponPickup.h"
 #include "Grid.generated.h"
+
 
 
 UCLASS()
@@ -39,6 +41,8 @@ public:
 		TSubclassOf<AStaticMeshActor> House3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> Bush;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AWeaponPickup> GunBP;
 	USceneComponent* LocationComponent;
 
 

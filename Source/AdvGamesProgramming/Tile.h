@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
+#include "WeaponPickup.h"
 #include "Tile.generated.h"
+
 
 UCLASS(BlueprintType)
 class ADVGAMESPROGRAMMING_API ATile : public AActor
@@ -32,6 +34,8 @@ public:
 		TSubclassOf<AStaticMeshActor> ToSpawnHouse2;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawnHouse3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AWeaponPickup> ToSpawnGun;
 
 protected:
 	// Called when the game starts or when spawned

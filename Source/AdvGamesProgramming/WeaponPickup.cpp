@@ -119,7 +119,7 @@ FString AWeaponPickup::GenerateName(EWeaponPickupRarity WeaponRarity)
 	if (WeaponRarity != EWeaponPickupRarity::SPECIAL)
 	{
 		GunName += (FMath::RandBool()) ? Prefix[index][FMath::RandRange(0, 4)] + " " : "";
-		GunName += (FMath::RandBool()) ? "Gun of " + Suffix[FMath::RandRange(0, 4)] : "Gun";
+		GunName += (FMath::RandBool()) ? "Gun of " + Suffix[FMath::RandRange(0, 3)] : "Gun";
 	}
 	else
 	{

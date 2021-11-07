@@ -22,7 +22,6 @@ void ATile::BeginPlay()
 {
 	if (TileNo != 0 && House == true && IsRoad == false)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tile made house, %d "), TileNo);
 		CreateBuilding();
 	}
 }
@@ -68,6 +67,23 @@ void ATile::CreateBuilding()
 				spawnPar.Owner = this;
 				FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 30.0f);
 				World->SpawnActor<AStaticMeshActor>(ToSpawnHouse, Location, FRotator(0.0f, Rot, 90.0f), spawnPar);
+			}
+		}
+		// gun is possibly spawned on the first floor
+		if (House && FMath::FRandRange(1, 4) > 3)
+		{
+			if (true)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Gun can be spawned, %d "), TileNo);
+				UWorld* World = GetWorld();
+				if (World)
+				{
+					FActorSpawnParameters spawnPar;
+					spawnPar.Owner = this;
+					FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 0.0f);
+					World->SpawnActor<AWeaponPickup>(ToSpawnGun, Location, FRotator(0.0f, 0.0f, 0.0f), spawnPar);
+					UE_LOG(LogTemp, Warning, TEXT("Tile made gun, %d "), TileNo);
+				}
 			}
 		}
 

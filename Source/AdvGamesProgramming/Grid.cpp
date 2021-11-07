@@ -41,6 +41,7 @@ void AGrid::BeginPlay()
 				SpawnedTile->ToSpawnHouse = House1;
 				SpawnedTile->ToSpawnHouse2 = House2;
 				SpawnedTile->ToSpawnHouse3 = House3;
+				SpawnedTile->ToSpawnGun = GunBP;
 				SpawnedTile->ToSpawnBush = Bush;
 				if (FMath::FRandRange(1, 12) < 3)
 				{
@@ -128,7 +129,6 @@ void AGrid::RoadGen()
 					spawnPar.Owner = this;
 					World->SpawnActor<AStaticMeshActor>(RoadToSpawn, FindTilePos(CurrentTile), FRotator(0.0f, 0.0f, 0.0f), spawnPar);
 					TileGrid[CurrentTile]->IsRoad = true;
-					UE_LOG(LogTemp, Warning, TEXT("Road made"));
 					FindNextRoad();
 				}
 			}

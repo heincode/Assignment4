@@ -3,6 +3,13 @@
 
 #include "WeaponPickup.h"
 #include "Components/TextRenderComponent.h"
+#include "Net/UnrealNetwork.h"
+
+FString AWeaponPickup::Prefix[4][4] = { {"White", "Useless", "Unimpressive", "Boring"},
+							{"Blue", "Average", "Mediocre", "Okay-ish"},
+							{"Purple", "Higher", "Good", "Almost-Legendary"},
+							{"Golden", "Legendary", "Pog", "Famed"} };
+FString AWeaponPickup::Suffix[4] = { "Shooting", "Pog", "Killing", "Unknown" };
 
 void AWeaponPickup::OnGenerate()
 {
@@ -71,6 +78,18 @@ void AWeaponPickup::OnGenerate()
 	}
 }
 
+void AWeaponPickup::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AWeaponPickup, Rarity);
+	DOREPLIFETIME(AWeaponPickup, BulletDamage);
+	DOREPLIFETIME(AWeaponPickup, MuzzleVelocity);
+	DOREPLIFETIME(AWeaponPickup, MagazineSize);
+	DOREPLIFETIME(AWeaponPickup, WeaponAccuracy);
+	DOREPLIFETIME(AWeaponPickup, FireRate);
+}
+
 void AWeaponPickup::GenerateRandomBoolArray(int32 ArrayLength, int32 NumTrue, TArray<bool>& RandBoolArray)
 {
 	for (int32 i = 0; i < ArrayLength; i++)
@@ -93,11 +112,6 @@ FString AWeaponPickup::GenerateName(EWeaponPickupRarity WeaponRarity)
 {
 	float Rand = FMath::RandRange(0.0f, 1.0f);
 	FString GunName;
-	FString Prefix[4][4] = {{"White", "Useless", "Unimpressive", "Boring"},
-							{"Blue", "Average", "Mediocre", "Okay-ish"},
-							{"Purple", "Higher", "Good", "Almost-Legendary"},
-							{"Golden", "Legendary", "Pog", "Famed"}};
-	FString Suffix[4] = {"Shooting", "Pog", "Killing", "Unknown"};
 
 	int index;
 	switch (WeaponRarity)

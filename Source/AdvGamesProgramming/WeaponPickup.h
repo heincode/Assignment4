@@ -24,18 +24,21 @@ class ADVGAMESPROGRAMMING_API AWeaponPickup : public APickup
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	static FString Prefix[4][4];
+	static FString Suffix[4];
+
+	UPROPERTY(Replicated, BlueprintReadOnly, VisibleAnywhere)
 	EWeaponPickupRarity Rarity;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(Replicated, BlueprintReadOnly, VisibleAnywhere)
 	float BulletDamage;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(Replicated, BlueprintReadOnly, VisibleAnywhere)
 	float MuzzleVelocity;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(Replicated, BlueprintReadOnly, VisibleAnywhere)
 	int32 MagazineSize;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(Replicated, BlueprintReadOnly, VisibleAnywhere)
 	float WeaponAccuracy;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(Replicated, BlueprintReadOnly, VisibleAnywhere)
 	float FireRate;
 
 	UFUNCTION(BlueprintImplementableEvent)
@@ -47,6 +50,8 @@ public:
 	UTextRenderComponent* TextComponent;
 	UPROPERTY(BlueprintReadWrite)
 	float Luck;
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 private:
 	void GenerateRandomBoolArray(int32 ArrayLength, int32 NumTrue, TArray<bool>& RandBoolArray);

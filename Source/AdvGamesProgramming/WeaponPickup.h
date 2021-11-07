@@ -40,11 +40,15 @@ public:
 	float WeaponAccuracy;
 	UPROPERTY(Replicated, BlueprintReadOnly, VisibleAnywhere)
 	float FireRate;
+	UPROPERTY(Replicated)
+	FString Text;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnPickup(AActor* ActorThatPickedUp) override;
 	UFUNCTION(BlueprintCallable)
 	void OnGenerate() override;
+	UFUNCTION(BlueprintCallable)
+	void BlueprintSetText();
 
 	UPROPERTY(VisibleInstanceOnly)
 	UTextRenderComponent* TextComponent;

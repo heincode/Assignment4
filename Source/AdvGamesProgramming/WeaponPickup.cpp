@@ -58,30 +58,13 @@ void AWeaponPickup::OnGenerate()
 		MagazineSize = (RandBoolArray[2] ? FMath::RandRange(250, 999) : MagazineSize);
 		FireRate = (RandBoolArray[3] ? FMath::RandRange(0.1f, 0.15f) : FireRate);
 	}
-
-	TextComponent = FindComponentByClass<UTextRenderComponent>();
-	FString Text;
-	if (TextComponent)
-	{
-		Text = GenerateName(Rarity) + "\n"
-			"Bullet Damage: " + FString::Printf(TEXT("%d"), FMath::FloorToInt(BulletDamage)) + "\n" +
-			"Muzzle Velocity: " + FString::Printf(TEXT("%d"), FMath::FloorToInt(MuzzleVelocity)) + "\n" +
-			"Magazine Size: " + FString::Printf(TEXT("%d"), MagazineSize) + "\n" +
-			"Weapon Accuracy: " + FString::Printf(TEXT("%d"), FMath::FloorToInt(WeaponAccuracy * 100)) + "%";
-		if (FireRate <= 0.15f && FireRate != 0)
-		{
-			Text += "Passive\n\"Cookie Clicker\": Increased Fire Rate";
-		}
-		
-		TextComponent->SetText(Text);
-		TextComponent->SetVisibility(true);
-	}
 }
 
 void AWeaponPickup::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(AWeaponPickup, Text);
 	DOREPLIFETIME(AWeaponPickup, Rarity);
 	DOREPLIFETIME(AWeaponPickup, BulletDamage);
 	DOREPLIFETIME(AWeaponPickup, MuzzleVelocity);
@@ -147,4 +130,24 @@ FString AWeaponPickup::GenerateName(EWeaponPickupRarity WeaponRarity)
 	}
 
 	return GunName;
+}
+
+void AWeaponPickup::BlueprintSetText()
+{
+	TextComponent = FindComponentByClass<UTextRenderComponent>();
+	if (TextComponent)
+	{
+		Text = GenerateName(Rarity) + "\n"
+			"Bullet Damage: " + FString::Printf(TEXT("%d"), FMath::FloorToInt(BulletDamage)) + "\n" +
+			"Muzzle Velocity: " + FString::Printf(TEXT("%d"), FMath::FloorToInt(MuzzleVelocity)) + "\n" +
+			"Magazine Size: " + FString::Printf(TEXT("%d"), MagazineSize) + "\n" +
+			"Weapon Accuracy: " + FString::Printf(TEXT("%d"), FMath::FloorToInt(WeaponAccuracy * 100)) + "%";
+		if (FireRate <= 0.15f && FireRate != 0)
+		{
+			Text += "Passive\n\"Cookie Clicker\": Increased Fire Rate";
+		}
+
+		TextComponent->SetText(Text);
+		TextComponent->SetVisibility(true);
+	}
 }

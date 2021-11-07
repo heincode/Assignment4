@@ -154,6 +154,7 @@ void APlayerCharacter::Reload()
 
 void APlayerCharacter::OnDeath()
 {
+	BlueprintDeath();
 	ScoreTracker->AddDeath();
 	ServerAddDeath();
 	if (GetLocalRole() == ROLE_Authority)

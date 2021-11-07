@@ -59,6 +59,8 @@ public:
 	void BlueprintReload();
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	int32 Pity;
+	UFUNCTION(BlueprintImplementableEvent)
+	void BlueprintDeath();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ResetModelVisibility();

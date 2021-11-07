@@ -70,11 +70,10 @@ void ATile::CreateBuilding()
 			}
 		}
 		// gun is possibly spawned on the first floor
-		if (House && FMath::FRandRange(1, 4) > 3)
+		if (FMath::FRandRange(1, 4) > 3)
 		{
 			if (true)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Gun can be spawned, %d "), TileNo);
 				UWorld* World = GetWorld();
 				if (World)
 				{
@@ -82,7 +81,6 @@ void ATile::CreateBuilding()
 					spawnPar.Owner = this;
 					FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 40.0f);
 					World->SpawnActor<AWeaponPickup>(ToSpawnGun, Location, FRotator(0.0f, 0.0f, 0.0f), spawnPar);
-					UE_LOG(LogTemp, Warning, TEXT("Tile made gun, %d "), TileNo);
 				}
 			}
 		}
@@ -101,6 +99,21 @@ void ATile::CreateBuilding()
 					World->SpawnActor<AStaticMeshActor>(ToSpawnHouse2, Location, FRotator(0.0f, Rot, 90.0f), spawnPar);
 				}
 			}
+			// gun is possibly spawned on 2nd floor
+			if (FMath::FRandRange(1, 5) > 3)
+			{
+				if (true)
+				{
+					UWorld* World = GetWorld();
+					if (World)
+					{
+						FActorSpawnParameters spawnPar;
+						spawnPar.Owner = this;
+						FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 470.0f);
+						World->SpawnActor<AWeaponPickup>(ToSpawnGun, Location, FRotator(0.0f, 0.0f, 0.0f), spawnPar);
+					}
+				}
+			}
 		}
 
 		//third level created
@@ -115,6 +128,21 @@ void ATile::CreateBuilding()
 					spawnPar.Owner = this;
 					FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 830.0f);
 					World->SpawnActor<AStaticMeshActor>(ToSpawnHouse2, Location, FRotator(0.0f, Rot, 90.0f), spawnPar);
+				}
+			}
+			// gun is possibly spawned on the third floor
+			if (FMath::FRandRange(1, 5) > 3)
+			{
+				if (true)
+				{
+					UWorld* World = GetWorld();
+					if (World)
+					{
+						FActorSpawnParameters spawnPar;
+						spawnPar.Owner = this;
+						FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 870.0f);
+						World->SpawnActor<AWeaponPickup>(ToSpawnGun, Location, FRotator(0.0f, 0.0f, 0.0f), spawnPar);
+					}
 				}
 			}
 		}

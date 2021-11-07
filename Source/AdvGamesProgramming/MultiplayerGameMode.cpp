@@ -62,7 +62,8 @@ void AMultiplayerGameMode::TriggerRespawn(AController* Controller)
 		AActor* SpawnPoint = ChoosePlayerStart(Controller);
 		if (SpawnPoint)
 		{
-			APawn* SpawnedPlayer = GetWorld()->SpawnActor<APawn>(DefaultPawnClass, SpawnPoint->GetActorLocation(), SpawnPoint->GetActorRotation());
+
+			APawn* SpawnedPlayer = GetWorld()->SpawnActor<APawn>(DefaultPawnClass, FVector(FMath::FRandRange(600, 27800), FMath::FRandRange(-400, 27000),20.0f), SpawnPoint->GetActorRotation());
 			if (SpawnedPlayer)
 			{
 				Controller->Possess(SpawnedPlayer);

@@ -80,7 +80,7 @@ void ATile::CreateBuilding()
 				{
 					FActorSpawnParameters spawnPar;
 					spawnPar.Owner = this;
-					FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 0.0f);
+					FVector Location = this->GetActorLocation() + FVector(0.0f, 0.0f, 40.0f);
 					World->SpawnActor<AWeaponPickup>(ToSpawnGun, Location, FRotator(0.0f, 0.0f, 0.0f), spawnPar);
 					UE_LOG(LogTemp, Warning, TEXT("Tile made gun, %d "), TileNo);
 				}

@@ -29,6 +29,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawnBush;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> ToSpawnTreeStump;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawnHouse;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> ToSpawnHouse2;

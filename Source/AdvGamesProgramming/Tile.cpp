@@ -164,6 +164,7 @@ void ATile::CreateBuilding()
 //trees are created and placed randomly within their tile at a random rotation
 void ATile::GenerateTrees()
 {
+	//chance to spawn trees
 	if (!House && FMath::FRandRange(1, 3) < 2)
 	{
 		if (ToSpawn)
@@ -175,6 +176,21 @@ void ATile::GenerateTrees()
 				spawnPar.Owner = this;
 				FVector Location = this->GetActorLocation() + FVector(FMath::FRandRange(-500, 500), FMath::FRandRange(-500, 500), 150.0f);
 				World->SpawnActor<AStaticMeshActor>(ToSpawn, Location, FRotator(0.0f, FMath::FRandRange(1, 180), 90.0f), spawnPar);
+			}
+		}
+	}
+	//lower chance to spawn tree stumps
+	if (!House && FMath::FRandRange(1, 9) > 7)
+	{
+		if (ToSpawnTreeStump)
+		{
+			UWorld* World = GetWorld();
+			if (World)
+			{
+				FActorSpawnParameters spawnPar;
+				spawnPar.Owner = this;
+				FVector Location = this->GetActorLocation() + FVector(FMath::FRandRange(-500, 500), FMath::FRandRange(-500, 500), 0.0f);
+				World->SpawnActor<AStaticMeshActor>(ToSpawnTreeStump, Location, FRotator(0.0f, FMath::FRandRange(1, 180), 90.0f), spawnPar);
 			}
 		}
 	}

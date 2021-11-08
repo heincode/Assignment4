@@ -42,6 +42,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> Bush;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> TreeStump;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> Car;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AWeaponPickup> GunBP;

@@ -43,6 +43,7 @@ void AGrid::BeginPlay()
 				SpawnedTile->ToSpawnHouse3 = House3;
 				SpawnedTile->ToSpawnGun = GunBP;
 				SpawnedTile->ToSpawnBush = Bush;
+				SpawnedTile->ToSpawnTreeStump = TreeStump;
 				if (FMath::FRandRange(1, 12) < 3)
 				{
 					SpawnedTile->House = true;

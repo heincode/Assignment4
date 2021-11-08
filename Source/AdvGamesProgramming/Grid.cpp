@@ -120,6 +120,7 @@ void AGrid::RoadGen()
 		else
 		{
 			TileGrid[CurrentTile]->House = true;
+			//spawns the road
 			if (RoadToSpawn)
 			{
 				UWorld* World = GetWorld();
@@ -130,6 +131,17 @@ void AGrid::RoadGen()
 					World->SpawnActor<AStaticMeshActor>(RoadToSpawn, FindTilePos(CurrentTile), FRotator(0.0f, 0.0f, 0.0f), spawnPar);
 					TileGrid[CurrentTile]->IsRoad = true;
 					FindNextRoad();
+				}
+			}
+			//low chance to generate a car on road
+			if (Car && FMath::FRandRange(0,40) > 37)
+			{
+				UWorld* World = GetWorld();
+				if (World)
+				{
+					FActorSpawnParameters spawnPar;
+					spawnPar.Owner = this;
+					World->SpawnActor<AStaticMeshActor>(Car, FindTilePos(CurrentTile), FRotator(0.0f, FMath::FRandRange(1, 359), 0.0f), spawnPar);
 				}
 			}
 		}

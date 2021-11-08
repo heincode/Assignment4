@@ -42,8 +42,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AStaticMeshActor> Bush;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStaticMeshActor> Car;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AWeaponPickup> GunBP;
 	USceneComponent* LocationComponent;
+
 
 
 
